@@ -8,18 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		387ADDAB2A8A6F1B00909FBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387ADDAA2A8A6F1B00909FBE /* AppDelegate.swift */; };
-		387ADDAF2A8A6F1B00909FBE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387ADDAE2A8A6F1B00909FBE /* ViewController.swift */; };
+		387ADDAF2A8A6F1B00909FBE /* GeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387ADDAE2A8A6F1B00909FBE /* GeneralViewController.swift */; };
 		387ADDB42A8A6F1D00909FBE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 387ADDB32A8A6F1D00909FBE /* Assets.xcassets */; };
 		387ADDB72A8A6F1D00909FBE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 387ADDB52A8A6F1D00909FBE /* LaunchScreen.storyboard */; };
+		387ADDBF2A8A834600909FBE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387ADDBE2A8A834600909FBE /* TabBarController.swift */; };
+		387ADDC12A8A84AB00909FBE /* SportsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387ADDC02A8A84AB00909FBE /* SportsViewController.swift */; };
+		387ADDC32A8A867900909FBE /* TechnologyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387ADDC22A8A867900909FBE /* TechnologyViewController.swift */; };
+		387ADDC62A8AC87200909FBE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 387ADDC52A8AC87200909FBE /* SnapKit */; };
+		387ADDCC2A8ACA9D00909FBE /* GeneralCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387ADDCB2A8ACA9D00909FBE /* GeneralCollectionViewCell.swift */; };
+		387ADDCE2A8AE35900909FBE /* ShowNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387ADDCD2A8AE35900909FBE /* ShowNewsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		387ADDA72A8A6F1B00909FBE /* NewsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		387ADDAA2A8A6F1B00909FBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		387ADDAE2A8A6F1B00909FBE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		387ADDAE2A8A6F1B00909FBE /* GeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralViewController.swift; sourceTree = "<group>"; };
 		387ADDB32A8A6F1D00909FBE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		387ADDB62A8A6F1D00909FBE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		387ADDB82A8A6F1D00909FBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		387ADDBE2A8A834600909FBE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		387ADDC02A8A84AB00909FBE /* SportsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsViewController.swift; sourceTree = "<group>"; };
+		387ADDC22A8A867900909FBE /* TechnologyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechnologyViewController.swift; sourceTree = "<group>"; };
+		387ADDCB2A8ACA9D00909FBE /* GeneralCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralCollectionViewCell.swift; sourceTree = "<group>"; };
+		387ADDCD2A8AE35900909FBE /* ShowNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowNewsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				387ADDC62A8AC87200909FBE /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,12 +65,49 @@
 			isa = PBXGroup;
 			children = (
 				387ADDAA2A8A6F1B00909FBE /* AppDelegate.swift */,
-				387ADDAE2A8A6F1B00909FBE /* ViewController.swift */,
+				387ADDBE2A8A834600909FBE /* TabBarController.swift */,
+				387ADDC72A8ACA3900909FBE /* General */,
+				387ADDC82A8ACA4500909FBE /* Sports */,
+				387ADDC92A8ACA4C00909FBE /* Technology */,
+				387ADDCD2A8AE35900909FBE /* ShowNewsViewController.swift */,
 				387ADDB32A8A6F1D00909FBE /* Assets.xcassets */,
 				387ADDB52A8A6F1D00909FBE /* LaunchScreen.storyboard */,
 				387ADDB82A8A6F1D00909FBE /* Info.plist */,
 			);
 			path = NewsApp;
+			sourceTree = "<group>";
+		};
+		387ADDC72A8ACA3900909FBE /* General */ = {
+			isa = PBXGroup;
+			children = (
+				387ADDCA2A8ACA7500909FBE /* View */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		387ADDC82A8ACA4500909FBE /* Sports */ = {
+			isa = PBXGroup;
+			children = (
+				387ADDC02A8A84AB00909FBE /* SportsViewController.swift */,
+			);
+			path = Sports;
+			sourceTree = "<group>";
+		};
+		387ADDC92A8ACA4C00909FBE /* Technology */ = {
+			isa = PBXGroup;
+			children = (
+				387ADDC22A8A867900909FBE /* TechnologyViewController.swift */,
+			);
+			path = Technology;
+			sourceTree = "<group>";
+		};
+		387ADDCA2A8ACA7500909FBE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				387ADDAE2A8A6F1B00909FBE /* GeneralViewController.swift */,
+				387ADDCB2A8ACA9D00909FBE /* GeneralCollectionViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,6 +126,9 @@
 			dependencies = (
 			);
 			name = NewsApp;
+			packageProductDependencies = (
+				387ADDC52A8AC87200909FBE /* SnapKit */,
+			);
 			productName = NewsApp;
 			productReference = 387ADDA72A8A6F1B00909FBE /* NewsApp.app */;
 			productType = "com.apple.product-type.application";
@@ -105,6 +157,9 @@
 				Base,
 			);
 			mainGroup = 387ADD9E2A8A6F1A00909FBE;
+			packageReferences = (
+				387ADDC42A8AC87200909FBE /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 387ADDA82A8A6F1B00909FBE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -131,8 +186,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				387ADDAF2A8A6F1B00909FBE /* ViewController.swift in Sources */,
+				387ADDC32A8A867900909FBE /* TechnologyViewController.swift in Sources */,
+				387ADDCC2A8ACA9D00909FBE /* GeneralCollectionViewCell.swift in Sources */,
+				387ADDBF2A8A834600909FBE /* TabBarController.swift in Sources */,
+				387ADDAF2A8A6F1B00909FBE /* GeneralViewController.swift in Sources */,
+				387ADDCE2A8AE35900909FBE /* ShowNewsViewController.swift in Sources */,
 				387ADDAB2A8A6F1B00909FBE /* AppDelegate.swift in Sources */,
+				387ADDC12A8A84AB00909FBE /* SportsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +402,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		387ADDC42A8AC87200909FBE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		387ADDC52A8AC87200909FBE /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 387ADDC42A8AC87200909FBE /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 387ADD9F2A8A6F1A00909FBE /* Project object */;
 }
