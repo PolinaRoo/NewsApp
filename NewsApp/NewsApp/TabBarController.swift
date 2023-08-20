@@ -19,7 +19,7 @@ final class TabBarController: UITabBarController {
     private func setupViewControllers() {
         
         viewControllers = [
-            setupNavigationController(rootViewController: GeneralViewController(),
+            setupNavigationController(rootViewController: GeneralViewController(viewModel: GeneralViewModel()),
                                       title: "General",
                                       image: UIImage(systemName: "newspaper") ?? UIImage.add),
             setupNavigationController(rootViewController: SportsViewController(),
@@ -42,7 +42,17 @@ final class TabBarController: UITabBarController {
         navigationController.tabBarItem.image = image
         rootViewController.navigationItem.title = title
         navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationBar.prefersLargeTitles = false
         
         return navigationController
+    }
+    
+    // непрозрачный тапбарGene
+    private func setupTabBar() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        tabBar.scrollEdgeAppearance = appearance
+        
+        view.tintColor = .black
     }
 }
