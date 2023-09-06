@@ -77,7 +77,7 @@ final class ShowNewsViewController: UIViewController {
         
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
-        dataLabel.text = viewModel.date
+        dataLabel.text = String(viewModel.date.prefix(10))
         
         if let data = viewModel.imageData,
            let image = UIImage(data: data) {

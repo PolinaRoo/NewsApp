@@ -1,14 +1,13 @@
 //
-//  SportsViewController.swift
+//  TechnologyViewController.swift
 //  NewsApp
 //
 //  Created by Polina Tereshchenko on 14.08.2023.
 //
 
 import UIKit
-import SnapKit
 
-class SportsViewController: UIViewController {
+final class TechnologyViewController: UIViewController {
     
     //MARK: - GUI Variables
     
@@ -23,7 +22,6 @@ class SportsViewController: UIViewController {
                                            left: 20,
                                            bottom: 20,
                                            right: 20)
-        // layout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView(frame: CGRect(x: 0,
                                                             y: 0,
@@ -36,25 +34,47 @@ class SportsViewController: UIViewController {
         
         return collectionView
     }()
-    
     //MARK: - Properties
     
+    private var viewModel: TechnologyViewModel
+    
     //MARK: - Life Cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    
+    init(viewModel: TechnologyViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
         collectionView.register(GeneralCollectionViewCell.self,
                                 forCellWithReuseIdentifier: "GeneralCollectionViewCell")
         collectionView.register(DetailsCollectionViewCell.self,
                                 forCellWithReuseIdentifier: "DetailsCollectionViewCell")
         
         setupUI()
+        self.setupViewModel()
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     //MARK: - Methods
     
     //MARK: - Private Methods
+    private func setupViewModel() {
+        viewModel.reloadData = { [weak self] in
+            self?.collectionView.reloadData()
+        }
+        
+        viewModel.reloadCell = { [weak self] row in
+            row == 0 ?
+            self?.collectionView.reloadItems(at:[IndexPath.init(row: row, section: 0)]) :
+            self?.collectionView.reloadItems(at:[IndexPath.init(row: row, section: 1)])
+        }
+        
+        viewModel.showError = { error in
+            print(error)
+        }
+    }
     
     private func setupUI() {
         view.backgroundColor = .white
@@ -72,39 +92,55 @@ class SportsViewController: UIViewController {
 }
 
 //MARK: - UICollectionViewDataSource
-extension SportsViewController: UICollectionViewDataSource {
+extension TechnologyViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        section == 0 ? 1 : 15
+        section == 0 ? 1 : (viewModel.numberOfCells - 1)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell: UICollectionViewCell?
+        var article: ArticleCellViewModel
+        if indexPath.section == 0 && indexPath.row == 0 {
+                article = viewModel.getArticle(for: indexPath.row)
+        } else
+            {
+                article = viewModel.getArticle(for: indexPath.row + 1)
+            }
         
         if indexPath.section == 0 {
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GeneralCollectionViewCell",
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GeneralCollectionViewCell",
                                                         for: indexPath) as? GeneralCollectionViewCell
+            else {return UICollectionViewCell()}
+            cell.set(article: article)
+            return cell
         } else {
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsCollectionViewCell",
+           guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsCollectionViewCell",
                                                       for: indexPath) as? DetailsCollectionViewCell
+            else {return UICollectionViewCell()}
+            cell.set(article: article)
+            return cell
         }
-        
-        return cell ?? UICollectionViewCell()
     }
 }
 
 //MARK: - UICollectionViewDelegate
-extension SportsViewController: UICollectionViewDelegate {
+extension TechnologyViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //navigationController?.pushViewController(ShowNewsViewController(), animated: true)
+        let article: ArticleCellViewModel
+        if indexPath.section == 0 {
+            article = viewModel.getArticle(for: indexPath.row)
+        } else {
+            article = viewModel.getArticle(for: indexPath.row + 1)
+        }
+        navigationController?.pushViewController(ShowNewsViewController(viewModel: ShowNewsViewModel(article: article)), animated: true)
     }
 }
 
 // MARK:
-extension SportsViewController: UICollectionViewDelegateFlowLayout{
+extension TechnologyViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -116,3 +152,4 @@ extension SportsViewController: UICollectionViewDelegateFlowLayout{
         return indexPath.section == 0 ? firstSectionItemSize : SecondSectionItemSize
     }
 }
+

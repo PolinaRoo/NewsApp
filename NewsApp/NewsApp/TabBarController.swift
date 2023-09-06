@@ -22,10 +22,10 @@ final class TabBarController: UITabBarController {
             setupNavigationController(rootViewController: GeneralViewController(viewModel: GeneralViewModel()),
                                       title: "General",
                                       image: UIImage(systemName: "newspaper") ?? UIImage.add),
-            setupNavigationController(rootViewController: SportsViewController(),
+            setupNavigationController(rootViewController: SportsViewController(viewModel: SportsViewModel()),
                                       title: "Sports",
                                       image: UIImage(systemName: "figure.disc.sports") ?? UIImage.add),
-            setupNavigationController(rootViewController: TechnologyViewController(),
+            setupNavigationController(rootViewController: TechnologyViewController(viewModel: TechnologyViewModel()),
                                       title: "Technology",
                                       image: UIImage(systemName: "gyroscope") ?? UIImage.add)
         ]

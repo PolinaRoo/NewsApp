@@ -31,8 +31,6 @@ final class GeneralCollectionViewCell: UICollectionViewCell {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        
-        label.text = "Text"
         label.textColor = .white
         
         return label
