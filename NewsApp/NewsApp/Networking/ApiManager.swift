@@ -8,18 +8,22 @@
 import Foundation
 
 final class ApiManager {
+    enum Theme: String {
+        case everything = "everything?sources=bbc-news&language=en"
+        case sports = "top-headlines?category=sports&country=us"
+        case technology = "top-headlines?category=technology&country=us"
+        
+    }
     
     private static let apiKey = "f336dc57a0f54fcb9e0a9c9b2d58e207"
     private static let baseUrl = "https://newsapi.org/v2/"
-    private static let path = "everything"
     
     //create URL path and make request
-    
-    static func getNews(completion: @escaping (Result<[ArticleResponseObject], Error>) -> ()) {
-        let stringUrl = baseUrl + path + "?sources=bbc-news&language=en" + "&apiKey=\(apiKey)"
-        
+    static func getNews(theme: Theme, completion: @escaping (Result<[ArticleResponseObject], Error>) -> ()) {
+        let stringUrl = baseUrl + theme.rawValue  + "&apiKey=\(apiKey)"
+        print(stringUrl)
         guard let url = URL(string: stringUrl) else { return }
-        
+        print(url)
         let session = URLSession.shared.dataTask(with: url) { data, _, error in
             handleResponse(data: data, error: error, completion: completion)
         }
@@ -36,6 +40,7 @@ final class ApiManager {
             }
             
             if let error = error {
+                print(error)
                 completion(.failure(error))
             }
         }
@@ -47,6 +52,9 @@ final class ApiManager {
         if let error = error {
             completion(.failure(NetworkingError.networkingError(error)))
         } else if let data = data {
+            let json = try? JSONSerialization.jsonObject(with: data, options: [])
+            print(json ?? "")
+            
             do {
                 let model = try JSONDecoder().decode(NewsResponseObject.self,
                                                      from: data)
