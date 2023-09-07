@@ -29,7 +29,7 @@ class SportsViewController: UIViewController {
                                                             y: 0,
                                                             width: view.frame.width,
                                                             height: view.frame.height),
-                                                            collectionViewLayout: layout)
+                                              collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
@@ -68,9 +68,7 @@ class SportsViewController: UIViewController {
         }
         
         viewModel.reloadCell = { [weak self] row in
-            row == 0 ?
-            self?.collectionView.reloadItems(at:[IndexPath.init(row: row, section: 0)]) :
-            self?.collectionView.reloadItems(at:[IndexPath.init(row: row, section: 1)])
+            self?.collectionView.reloadItems(at: [IndexPath(row: row, section: row == 0 ? 0 : 1)])
         }
         
         viewModel.showError = { error in
@@ -81,7 +79,7 @@ class SportsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         view.addSubview(collectionView)
-
+        
         setupConstraints()
     }
     
@@ -106,21 +104,20 @@ extension SportsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var article: ArticleCellViewModel
         if indexPath.section == 0 && indexPath.row == 0 {
-                article = viewModel.getArticle(for: indexPath.row)
+            article = viewModel.getArticle(for: indexPath.row)
         } else
-            {
-                article = viewModel.getArticle(for: indexPath.row + 1)
-            }
-        
+        {
+            article = viewModel.getArticle(for: indexPath.row + 1)
+        }
         if indexPath.section == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GeneralCollectionViewCell",
-                                                        for: indexPath) as? GeneralCollectionViewCell
+                                                                for: indexPath) as? GeneralCollectionViewCell
             else {return UICollectionViewCell()}
             cell.set(article: article)
             return cell
         } else {
-           guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsCollectionViewCell",
-                                                      for: indexPath) as? DetailsCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsCollectionViewCell",
+                                                                for: indexPath) as? DetailsCollectionViewCell
             else {return UICollectionViewCell()}
             cell.set(article: article)
             return cell
@@ -131,12 +128,7 @@ extension SportsViewController: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegate
 extension SportsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let article: ArticleCellViewModel
-        if indexPath.section == 0 {
-            article = viewModel.getArticle(for: indexPath.row)
-        } else {
-            article = viewModel.getArticle(for: indexPath.row + 1)
-        }
+        let article =  viewModel.getArticle(for: indexPath.section == 0 ? indexPath.row : indexPath.row + 1)
         navigationController?.pushViewController(ShowNewsViewController(viewModel: ShowNewsViewModel(article: article)), animated: true)
     }
 }

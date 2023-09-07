@@ -35,7 +35,7 @@ final class TechnologyViewModel: TechnologyViewModelProtocol {
     }
     
     init() {
-           loadData()
+        loadData()
     }
     
     func getArticle(for row: Int) -> ArticleCellViewModel {
@@ -58,11 +58,11 @@ final class TechnologyViewModel: TechnologyViewModelProtocol {
     }
     
     private func loadImage() {
-       // print(#function)
+        // print(#function)
         // TODO: Get imageData
         // Slow
-       // guard let url = URL(string: articles[row].imageUrl),
-         //     let data = try? Data(contentsOf: url) else { return }
+        // guard let url = URL(string: articles[row].imageUrl),
+        //     let data = try? Data(contentsOf: url) else { return }
         for (index, article) in articlesTechnology.enumerated() {
             ApiManager.getImageData(url: article.imageUrl) { [weak self] result in
                 DispatchQueue.main.async {

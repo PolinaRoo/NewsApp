@@ -40,7 +40,7 @@ final class ShowNewsViewController: UIViewController {
         return text
     }()
     
-    private lazy var dataLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel()
         
         label.textColor = .black
@@ -72,12 +72,12 @@ final class ShowNewsViewController: UIViewController {
         view.backgroundColor = .systemGray5
         view.addSubview(titleLabel)
         view.addSubview(imageView)
-        view.addSubview(dataLabel)
+        view.addSubview(dateLabel)
         view.addSubview(descriptionLabel)
         
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
-        dataLabel.text = String(viewModel.date.prefix(10))
+        dateLabel.text = String(viewModel.date.prefix(10))
         
         if let data = viewModel.imageData,
            let image = UIImage(data: data) {
@@ -100,14 +100,14 @@ final class ShowNewsViewController: UIViewController {
             make.height.equalTo(view.frame.height / 6)
         }
         
-        dataLabel.snp.makeConstraints { make in
+        dateLabel.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom)
             make.trailing.equalTo(-5)
             make.height.equalTo(view.frame.height / 18)
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(dataLabel.snp.bottom)
+            make.top.equalTo(dateLabel.snp.bottom)
             make.leading.trailing.equalToSuperview().inset(5)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }

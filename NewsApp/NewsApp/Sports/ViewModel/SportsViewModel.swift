@@ -26,6 +26,7 @@ final class SportsViewModel: SportsViewModelProtocol {
     var numberOfCells: Int{
         articlesSports.count
     }
+    
     private var articlesSports: [ArticleCellViewModel] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -35,7 +36,7 @@ final class SportsViewModel: SportsViewModelProtocol {
     }
     
     init() {
-           loadData()
+        loadData()
     }
     
     func getArticle(for row: Int) -> ArticleCellViewModel {
@@ -58,11 +59,11 @@ final class SportsViewModel: SportsViewModelProtocol {
     }
     
     private func loadImage() {
-       // print(#function)
+        // print(#function)
         // TODO: Get imageData
         // Slow
-       // guard let url = URL(string: articles[row].imageUrl),
-         //     let data = try? Data(contentsOf: url) else { return }
+        // guard let url = URL(string: articles[row].imageUrl),
+        //     let data = try? Data(contentsOf: url) else { return }
         for (index, article) in articlesSports.enumerated() {
             ApiManager.getImageData(url: article.imageUrl) { [weak self] result in
                 DispatchQueue.main.async {
