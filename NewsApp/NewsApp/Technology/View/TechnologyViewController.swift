@@ -103,8 +103,7 @@ extension TechnologyViewController: UICollectionViewDataSource {
         var article: ArticleCellViewModel
         if indexPath.section == 0 && indexPath.row == 0 {
             article = viewModel.getArticle(for: indexPath.row)
-        } else
-        {
+        } else {
             article = viewModel.getArticle(for: indexPath.row + 1)
         }
         
