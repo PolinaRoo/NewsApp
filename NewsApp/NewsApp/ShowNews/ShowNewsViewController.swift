@@ -20,7 +20,7 @@ final class ShowNewsViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
- 
+        
         label.textColor = .black
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 23)
@@ -60,7 +60,7 @@ final class ShowNewsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -77,7 +77,7 @@ final class ShowNewsViewController: UIViewController {
         
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
-        dateLabel.text = String(viewModel.date.prefix(10))
+        dateLabel.text = viewModel.date
         
         if let data = viewModel.imageData,
            let image = UIImage(data: data) {
@@ -97,7 +97,7 @@ final class ShowNewsViewController: UIViewController {
         imageView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom)
             make.leading.trailing.equalToSuperview().inset(5)
-            make.height.equalTo(view.frame.height / 6)
+            make.height.equalTo(view.frame.height / 3)
         }
         
         dateLabel.snp.makeConstraints { make in
@@ -111,7 +111,7 @@ final class ShowNewsViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(5)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-
+        
     }
     
 }

@@ -8,12 +8,13 @@
 import UIKit
 import SnapKit
 
-class GeneralViewController: UIViewController {
+final class GeneralViewController: UIViewController {
     
     //MARK: - GUI Variables
-    
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        
+        searchBar.delegate = self
         
         return searchBar
     }()
@@ -41,10 +42,10 @@ class GeneralViewController: UIViewController {
     }()
     
     //MARK: - Properties
-    private var viewModel: GeneralViewModel
+    private var viewModel: NewsListViewModelProtocol
     
     //MARK: - Life Cycle
-    init(viewModel: GeneralViewModel) {
+    init(viewModel: NewsListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.setupViewModel()
@@ -60,9 +61,10 @@ class GeneralViewController: UIViewController {
         setupUI()
         collectionView.register(GeneralCollectionViewCell.self,
                                 forCellWithReuseIdentifier: "GeneralCollectionViewCell")
+        hideKeyboardWhenTappedAround()
+        
+        viewModel.loadData(searchText: nil)
     }
-    
-    //MARK: - Methods
     
     //MARK: - Private Methods
     private func setupViewModel() {
@@ -70,14 +72,17 @@ class GeneralViewController: UIViewController {
             self?.collectionView.reloadData()
         }
         
-        viewModel.reloadCell = { [weak self] row in
-            self?.collectionView.reloadItems(at: [IndexPath.init(row: row,
-                                                                 section: 0)])
+        viewModel.reloadCell = { [weak self] indexPath in
+            self?.collectionView.reloadItems(at: [indexPath])
         }
         
         viewModel.showError = { error in
-            // TODO
-            print(error)
+            switch error {
+            default:
+                print(error)
+            }
+            let alert = self.viewModel.makeAlert(titleController: "Error", messageController: "Something went wrong", titleButton: "OK")
+            self.present(alert, animated: true)
         }
     }
     
@@ -104,18 +109,21 @@ class GeneralViewController: UIViewController {
 
 //MARK: - UICollectionViewDataSource
 extension GeneralViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        viewModel.sections.count
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfCells
+        viewModel.sections[section].items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GeneralCollectionViewCell",
+        guard let article = viewModel.sections[indexPath.section].items[indexPath.row] as? ArticleCellViewModel,
+              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GeneralCollectionViewCell",
                                                             for: indexPath) as? GeneralCollectionViewCell
         else { return UICollectionViewCell() }
-        
-        let article = viewModel.getArticle(for: indexPath.row)
         cell.set(article: article)
-       // print(#function)
+        
         return cell
     }
     
@@ -124,7 +132,46 @@ extension GeneralViewController: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegate
 extension GeneralViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let article = viewModel.getArticle(for: indexPath.row)
+        guard let article =  viewModel.sections[indexPath.section].items[indexPath.row] as?  ArticleCellViewModel else { return }
         navigationController?.pushViewController(ShowNewsViewController(viewModel: ShowNewsViewModel(article: article)), animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        willDisplay cell: UICollectionViewCell,
+                        forItemAt indexPath: IndexPath) {
+        if indexPath.row == (viewModel.sections[indexPath.section].items.count - 15) {
+            viewModel.loadData(searchText: searchBar.text)
+        }
+    }
+}
+
+//MARK: -UISearchBarDelegate
+extension GeneralViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        else { return }
+        viewModel.loadData(searchText: text)
+        searchBar.searchTextField.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar,
+                   textDidChange searchText: String) {
+        if searchText.isEmpty {
+            viewModel.loadData(searchText: nil)
+        }
+    }
+}
+
+//MARK: -Keyboard
+extension GeneralViewController {
+    func hideKeyboardWhenTappedAround() {
+        let recognizer = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        view.addGestureRecognizer(recognizer)
+    }
+    
+    @objc
+    func hideKeyboard() {
+        view.endEditing(true)
     }
 }
