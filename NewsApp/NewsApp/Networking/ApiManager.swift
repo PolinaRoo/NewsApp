@@ -19,8 +19,15 @@ final class ApiManager {
     private static let baseUrl = "https://newsapi.org/v2/"
     
     //create URL path and make request
-    static func getNews(theme: Theme, completion: @escaping (Result<[ArticleResponseObject], Error>) -> ()) {
-        let stringUrl = baseUrl + theme.rawValue  + "&apiKey=\(apiKey)"
+    static func getNews(theme: Theme,
+                        page: Int,
+                        searchText: String?,
+                        completion: @escaping (Result<[ArticleResponseObject], Error>) -> ()) {
+        var searchParameter = ""
+        if let searchText = searchText {
+            searchParameter = "&q=\(searchText)"
+        }
+        let stringUrl = baseUrl + theme.rawValue + "&page=\(page)" + searchParameter + "&apiKey=\(apiKey)"
         print(stringUrl)
         guard let url = URL(string: stringUrl) else { return }
         print(url)
@@ -48,7 +55,8 @@ final class ApiManager {
         session.resume()
     }
     
-    private static func handleResponse(data: Data?, error: Error?, completion: @escaping (Result<[ArticleResponseObject], Error>) -> ()) {
+    private static func handleResponse(data: Data?, error: Error?,
+                                       completion: @escaping (Result<[ArticleResponseObject], Error>) -> ()) {
         if let error = error {
             completion(.failure(NetworkingError.networkingError(error)))
         } else if let data = data {

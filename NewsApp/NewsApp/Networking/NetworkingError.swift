@@ -8,6 +8,7 @@
 import Foundation
 
 enum NetworkingError: Error {
-    case networkingError(_ error: Error)
+    case apiKeyInvalid
     case unknown
+    case networkingError(_ error: Error)
 }

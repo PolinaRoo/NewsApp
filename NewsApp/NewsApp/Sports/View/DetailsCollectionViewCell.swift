@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 final class DetailsCollectionViewCell: UICollectionViewCell {
-    
     //MARK: - GUI Variables
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
@@ -79,7 +78,7 @@ final class DetailsCollectionViewCell: UICollectionViewCell {
         
         titleLabel.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview()
-            make.leading.equalTo(imageView.snp.trailing).offset(5)
+            make.leading.equalTo(imageView.snp.trailing).offset(10)
         }
         
         descriptionLabel.snp.makeConstraints { make in

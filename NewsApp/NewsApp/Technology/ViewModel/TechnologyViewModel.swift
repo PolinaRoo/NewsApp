@@ -7,88 +7,25 @@
 
 import Foundation
 
-protocol TechnologyViewModelProtocol {
-    var reloadData: (() -> Void)? { get set }
-    var showError: ((String) -> Void)? { get set }
-    var reloadCell: ((Int) -> Void)? { get set }
+final class TechnologyViewModel: NewsListViewModel {
+    override func loadData(searchText: String?) {
+        super.loadData(searchText: searchText)
+        
+        ApiManager.getNews(theme: .technology, page: page, searchText: searchText) { [weak self] result in
+            self?.handleResult(result: result)
+        }
+    }
     
-    var numberOfCells: Int { get }
-    
-    func getArticle(for row: Int) -> ArticleCellViewModel
+    override func convertToCellViewModel(_ articlesSports: [ArticleResponseObject]) {
+        var viewModels = articlesSports.map { ArticleCellViewModel(article: $0) }
+        if sections.isEmpty {
+            let firstSection =  TableCollectionViewSection(items: [viewModels.removeFirst()])
+            let secondSection = TableCollectionViewSection(items: viewModels)
+            sections = [firstSection, secondSection]
+        } else {
+            sections[1].items += viewModels
+        }
+    }
 }
 
-final class TechnologyViewModel: TechnologyViewModelProtocol {
-    var reloadData: (() -> Void)?
-    var reloadCell: ((Int) -> Void)?
-    var showError: ((String) -> Void)?
-    
-    //MARK: - Properties
-    var numberOfCells: Int{
-        articlesTechnology.count
-    }
-    private var articlesTechnology: [ArticleCellViewModel] = [] {
-        didSet {
-            DispatchQueue.main.async {
-                self.reloadData?()
-            }
-        }
-    }
-    
-    init() {
-        loadData()
-    }
-    
-    func getArticle(for row: Int) -> ArticleCellViewModel {
-        return articlesTechnology[row]
-    }
-    
-    private func loadData() {
-        ApiManager.getNews(theme: .technology) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let articles):
-                self.articlesTechnology = self.convertToCellViewModel(articles)
-                self.loadImage()
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.showError?(error.localizedDescription)
-                }
-            }
-        }
-    }
-    
-    private func loadImage() {
-        // print(#function)
-        // TODO: Get imageData
-        // Slow
-        // guard let url = URL(string: articles[row].imageUrl),
-        //     let data = try? Data(contentsOf: url) else { return }
-        for (index, article) in articlesTechnology.enumerated() {
-            ApiManager.getImageData(url: article.imageUrl) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let data):
-                        self?.articlesTechnology[index].imageData = data
-                        self?.reloadCell?(index)
-                    case .failure(let error):
-                        self?.showError?(error.localizedDescription)
-                    }
-                }
-            }
-        }
-    }
-    
-    private func convertToCellViewModel(_ articlesTechnology: [ArticleResponseObject]) -> [ArticleCellViewModel] {
-        return articlesTechnology.map { ArticleCellViewModel(article: $0) }
-    }
-    
-    private func setupMockObjects() {
-        articlesTechnology = [
-            ArticleCellViewModel(article: ArticleResponseObject(title: "First",
-                                                                description: "First First First First First First First First ",
-                                                                urlToImage: "Fifcffffffrst",
-                                                                date: "23.08.2023"))
-        ]
-    }
-}
 
